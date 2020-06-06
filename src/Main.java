@@ -58,9 +58,11 @@ public class Main {
     static List<Double> coachClassService3WorkingTime = new ArrayList<>();
     static List<Double> coachClassService4WorkingTime = new ArrayList<>();
 
+    static Scanner scanner = new Scanner(System.in);
+    static Random random = new Random();
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Random random = new Random();
+
 
 
         // inputs for simulation
@@ -96,8 +98,8 @@ public class Main {
                 firstClass.setLevel(1);
                 firstClass.setPassengerId(firstClassId);
                 firstClass.setArrivalRate(random.nextDouble());
-                firstClass.setArrivalRate(Math.ceil(random.nextDouble() * firstClassAvgArrivalRate));
-                firstClass.setServiceRate(Math.ceil(random.nextDouble() * firstClassAvgServiceRate));
+                firstClass.setArrivalRate(Math.ceil(randomNumber(firstClassAvgArrivalRate)));
+                firstClass.setServiceRate(Math.ceil(randomNumber(firstClassAvgServiceRate)));
                 firstArrivalTime += firstClass.getArrivalRate();
                 firstClass.setArrivalTime(firstArrivalTime);
                 if (firstClass.getArrivalTime() < duration) {
@@ -113,8 +115,8 @@ public class Main {
                 coachClassId++;
                 coachClass.setLevel(2);
                 coachClass.setPassengerId(coachClassId);
-                coachClass.setArrivalRate(Math.ceil(random.nextDouble() * coachClassAvgArrivalRate));
-                coachClass.setServiceRate(Math.ceil(random.nextDouble() * coachClassAvgServiceRate));
+                coachClass.setArrivalRate(Math.ceil(randomNumber(coachClassAvgArrivalRate)));
+                coachClass.setServiceRate(Math.ceil(randomNumber(coachClassAvgServiceRate)));
                 coachArrivalTime += coachClass.getArrivalRate();
                 coachClass.setArrivalTime(coachArrivalTime);
                 if (coachClass.getArrivalTime() < duration) {
@@ -372,16 +374,6 @@ public class Main {
 
             printDisplay();
 
-
-            if (clock >= duration + 40) {
-                firstClassService1.setFree(true);
-                firstClassService2.setFree(true);
-                firstClassService3.setFree(true);
-                coachClassService1.setFree(true);
-                coachClassService2.setFree(true);
-                coachClassService3.setFree(true);
-                coachClassService4.setFree(true);
-            }
         }
 
 
@@ -430,12 +422,8 @@ public class Main {
         System.out.println("The rate of occupancy of First Class Service 1: " + df.format(avgOfFirstClassService1) + "%");
         System.out.println("The rate of occupancy of First Class Service 2: " + df.format(avgOfFirstClassService2) + "%");
         System.out.println("The rate of occupancy of First Class Service 3: " + df.format(avgOfFirstClassService3) + "%");
-        if (firstClassQueue.size() != 0) {
-            System.out.println("The plane has taken off!!");
-            System.out.println("There are " + firstClassQueue.size() + " FIRST CLASS passengers unable to check-in.");
-        } else {
-            System.out.println("!!!All the FIRST CLASS passengers were finished check-in!!!");
-        }
+        System.out.println("!!!All the FIRST CLASS passengers were finished check-in!!!");
+
         System.out.println();
 
         System.out.println("+-------------------------------------------------------------+");
@@ -449,14 +437,13 @@ public class Main {
         System.out.println("The rate of occupancy of Coach Class Service 2: " + df.format(avgOfCoachClassService2) + "%");
         System.out.println("The rate of occupancy of Coach Class Service 3: " + df.format(avgOfCoachClassService3) + "%");
         System.out.println("The rate of occupancy of Coach Class Service 4: " + df.format(avgOfCoachClassService4) + "%");
-        if (coachClassQueue.size() != 0) {
-            System.out.println("The plane has taken off!!");
-            System.out.println("There are " + coachClassQueue.size() + " COACH CLASS passengers unable to check-in.");
-        } else {
-            System.out.println("!!!All the COACH CLASS passengers were finished check-in!!!");
-        }
-        System.out.println();
+        System.out.println("!!!All the COACH CLASS passengers were finished check-in!!!");
 
+        System.out.println();
+    }
+
+    public static double randomNumber(double input) {
+        return (input * 0.5) + (input * random.nextDouble());
     }
 
     public static double findSum(List<Double> list) {
@@ -483,21 +470,21 @@ public class Main {
             }
 
             if(coachClassQueue.size() < 10) {
-                System.out.printf("| First Class Line: %d passengers%31s%n", coachClassQueue.size(), s);
+                System.out.printf("| Coach Class Line: %d passengers%31s%n", coachClassQueue.size(), s);
             } else if (coachClassQueue.size() < 100) {
-                System.out.printf("| First Class Line: %d passengers%30s%n", coachClassQueue.size(), s);
+                System.out.printf("| Coach Class Line: %d passengers%30s%n", coachClassQueue.size(), s);
             } else {
-                System.out.printf("| First Class Line: %d passengers%29s%n", coachClassQueue.size(), s);
+                System.out.printf("| Coach Class Line: %d passengers%29s%n", coachClassQueue.size(), s);
             }
 
             System.out.printf("| First Class Service 1: %s %35s%n", firstClassService1.isFree() ? "\u2705" : "\u26D4", s);
             System.out.printf("| First Class Service 2: %s %35s%n", firstClassService2.isFree() ? "\u2705" : "\u26D4", s);
             System.out.printf("| First Class Service 3: %s %35s%n", firstClassService3.isFree() ? "\u2705" : "\u26D4", s);
 
-            System.out.printf("| First Class Service 1: %s %35s%n", coachClassService1.isFree() ? "\u2705" : "\u26D4", s);
-            System.out.printf("| First Class Service 2: %s %35s%n", coachClassService2.isFree() ? "\u2705" : "\u26D4", s);
-            System.out.printf("| First Class Service 3: %s %35s%n", coachClassService3.isFree() ? "\u2705" : "\u26D4", s);
-            System.out.printf("| First Class Service 4: %s %35s%n", coachClassService4.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 1: %s %35s%n", coachClassService1.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 2: %s %35s%n", coachClassService2.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 3: %s %35s%n", coachClassService3.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 4: %s %35s%n", coachClassService4.isFree() ? "\u2705" : "\u26D4", s);
 
 
         } else if (clock < 100){
@@ -511,21 +498,21 @@ public class Main {
             }
 
             if(coachClassQueue.size() < 10) {
-                System.out.printf("| First Class Line: %d passengers%31s%n", coachClassQueue.size(), s);
+                System.out.printf("| Coach Class Line: %d passengers%31s%n", coachClassQueue.size(), s);
             } else if (coachClassQueue.size() < 100) {
-                System.out.printf("| First Class Line: %d passengers%30s%n", coachClassQueue.size(), s);
+                System.out.printf("| Coach Class Line: %d passengers%30s%n", coachClassQueue.size(), s);
             } else {
-                System.out.printf("| First Class Line: %d passengers%29s%n", coachClassQueue.size(), s);
+                System.out.printf("| Coach Class Line: %d passengers%29s%n", coachClassQueue.size(), s);
             }
 
             System.out.printf("| First Class Service 1: %s %35s%n", firstClassService1.isFree() ? "\u2705" : "\u26D4", s);
             System.out.printf("| First Class Service 2: %s %35s%n", firstClassService2.isFree() ? "\u2705" : "\u26D4", s);
             System.out.printf("| First Class Service 3: %s %35s%n", firstClassService3.isFree() ? "\u2705" : "\u26D4", s);
 
-            System.out.printf("| First Class Service 1: %s %35s%n", coachClassService1.isFree() ? "\u2705" : "\u26D4", s);
-            System.out.printf("| First Class Service 2: %s %35s%n", coachClassService2.isFree() ? "\u2705" : "\u26D4", s);
-            System.out.printf("| First Class Service 3: %s %35s%n", coachClassService3.isFree() ? "\u2705" : "\u26D4", s);
-            System.out.printf("| First Class Service 4: %s %35s%n", coachClassService4.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 1: %s %35s%n", coachClassService1.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 2: %s %35s%n", coachClassService2.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 3: %s %35s%n", coachClassService3.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 4: %s %35s%n", coachClassService4.isFree() ? "\u2705" : "\u26D4", s);
 
         } else if (clock < 1000) {
             System.out.printf( "| Time: %.1f %49s%n", clock, s);
@@ -538,21 +525,21 @@ public class Main {
             }
 
             if(coachClassQueue.size() < 10) {
-                System.out.printf("| First Class Line: %d passengers%31s%n", coachClassQueue.size(), s);
+                System.out.printf("| Coach Class Line: %d passengers%31s%n", coachClassQueue.size(), s);
             } else if (coachClassQueue.size() < 100) {
-                System.out.printf("| First Class Line: %d passengers%30s%n", coachClassQueue.size(), s);
+                System.out.printf("| Coach Class Line: %d passengers%30s%n", coachClassQueue.size(), s);
             } else {
-                System.out.printf("| First Class Line: %d passengers%29s%n", coachClassQueue.size(), s);
+                System.out.printf("| Coach Class Line: %d passengers%29s%n", coachClassQueue.size(), s);
             }
 
             System.out.printf("| First Class Service 1: %s %35s%n", firstClassService1.isFree() ? "\u2705" : "\u26D4", s);
             System.out.printf("| First Class Service 2: %s %35s%n", firstClassService2.isFree() ? "\u2705" : "\u26D4", s);
             System.out.printf("| First Class Service 3: %s %35s%n", firstClassService3.isFree() ? "\u2705" : "\u26D4", s);
 
-            System.out.printf("| First Class Service 1: %s %35s%n", coachClassService1.isFree() ? "\u2705" : "\u26D4", s);
-            System.out.printf("| First Class Service 2: %s %35s%n", coachClassService2.isFree() ? "\u2705" : "\u26D4", s);
-            System.out.printf("| First Class Service 3: %s %35s%n", coachClassService3.isFree() ? "\u2705" : "\u26D4", s);
-            System.out.printf("| First Class Service 4: %s %35s%n", coachClassService4.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 1: %s %35s%n", coachClassService1.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 2: %s %35s%n", coachClassService2.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 3: %s %35s%n", coachClassService3.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 4: %s %35s%n", coachClassService4.isFree() ? "\u2705" : "\u26D4", s);
 
 
         } else {
@@ -566,21 +553,21 @@ public class Main {
             }
 
             if(coachClassQueue.size() < 10) {
-                System.out.printf("| First Class Line: %d passengers%31s%n", coachClassQueue.size(), s);
+                System.out.printf("| Coach Class Line: %d passengers%31s%n", coachClassQueue.size(), s);
             } else if (coachClassQueue.size() < 100) {
-                System.out.printf("| First Class Line: %d passengers%30s%n", coachClassQueue.size(), s);
+                System.out.printf("| Coach Class Line: %d passengers%30s%n", coachClassQueue.size(), s);
             } else {
-                System.out.printf("| First Class Line: %d passengers%29s%n", coachClassQueue.size(), s);
+                System.out.printf("| Coach Class Line: %d passengers%29s%n", coachClassQueue.size(), s);
             }
 
             System.out.printf("| First Class Service 1: %s %35s%n", firstClassService1.isFree() ? "\u2705" : "\u26D4", s);
             System.out.printf("| First Class Service 2: %s %35s%n", firstClassService2.isFree() ? "\u2705" : "\u26D4", s);
             System.out.printf("| First Class Service 3: %s %35s%n", firstClassService3.isFree() ? "\u2705" : "\u26D4", s);
 
-            System.out.printf("| First Class Service 1: %s %35s%n", coachClassService1.isFree() ? "\u2705" : "\u26D4", s);
-            System.out.printf("| First Class Service 2: %s %35s%n", coachClassService2.isFree() ? "\u2705" : "\u26D4", s);
-            System.out.printf("| First Class Service 3: %s %35s%n", coachClassService3.isFree() ? "\u2705" : "\u26D4", s);
-            System.out.printf("| First Class Service 4: %s %35s%n", coachClassService4.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 1: %s %35s%n", coachClassService1.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 2: %s %35s%n", coachClassService2.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 3: %s %35s%n", coachClassService3.isFree() ? "\u2705" : "\u26D4", s);
+            System.out.printf("| Coach Class Service 4: %s %35s%n", coachClassService4.isFree() ? "\u2705" : "\u26D4", s);
 
         }
         System.out.println("+-------------------------------------------------------------+");
